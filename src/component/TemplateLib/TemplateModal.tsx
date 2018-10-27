@@ -6,7 +6,7 @@ import update from 'immutability-helper';
 
 import './TemplateLibModal.less';
 import INTERFACE from '../../common/script/INTERFACE';
-import { ITemplateInfo } from '../interface';
+import { ITemplateInfo, TemplateType } from '../interface';
 import EditTemplateModal from './EditTemplateModal';
 import { EditType } from './interface';
 
@@ -58,26 +58,41 @@ class TemplateLibModal extends React.Component<TemplateLibModalProps, TemplateLi
 
     fetchTemplateList = async () => {
         const { moduleType } = this.props;
-        const type = 0;
 
-        const result = (await axios(INTERFACE.getTemplateList, {
+        // 获取系统模板与自定义模板
+        const result = await Promise.all([(await axios(INTERFACE.getTemplateList, {
             params: {
                 moduleType,
-                type,
+                type: TemplateType.System,
             },
-        })).data;
-        if (result.success) {
-            this.setState({
-                templateList: result.data.map((v: templateInfo) => {
-                    if (v.id === this.state.templateId) {
-                        v.active = true;
-                    } else {
-                        v.active = false;
-                    }
-                    return v;
-                }),
-            });
+        })).data,
+        (await axios(INTERFACE.getTemplateList, {
+            params: {
+                moduleType,
+                type: TemplateType.User,
+            },
+        })).data]);
+
+        let templateList: templateInfo[] = [];
+
+        if (result[0].success) {
+            templateList = templateList.concat(result[0].data);
         }
+
+        if (result[1].success) {
+            templateList = templateList.concat(result[1].data);
+        }
+
+        this.setState({
+            templateList: templateList.map((v: templateInfo) => {
+                if (v.id === this.state.templateId) {
+                    v.active = true;
+                } else {
+                    v.active = false;
+                }
+                return v;
+            }),
+        });
     }
 
     renderTitle() {
@@ -161,6 +176,23 @@ class TemplateLibModal extends React.Component<TemplateLibModalProps, TemplateLi
         }
     }
 
+    /**
+     * 复制模板
+     */
+    copyTemplate = async (id: number) => {
+        const result = (await axios(INTERFACE.copyTemplate, {
+            params: {
+                id,
+            },
+        })).data;
+        if (result.success) {
+            message.success('复制成功！');
+            this.fetchTemplateList();
+        } else {
+            message.success(result.msg);
+        }
+    }
+
     renderTemplateList = () => {
         const { templateList } = this.state;
         return templateList.map((v: templateInfo, i: number) => <Col span={3} key={i}>
@@ -183,6 +215,16 @@ class TemplateLibModal extends React.Component<TemplateLibModalProps, TemplateLi
                             onClick={(e) => {
                                 e.stopPropagation();
                                 this.showEditModal(v.id);
+                            }}
+                        />
+                    </Tooltip>
+                    <Tooltip title="复制模板" placement="top">
+                        <Icon
+                            type="copy"
+                            style={{ fontSize: '20px' }}
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                this.copyTemplate(v.id);
                             }}
                         />
                     </Tooltip>

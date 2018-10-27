@@ -27,6 +27,7 @@ const INTERFACE = {
 
     updateTemplate: `${SLD.backend}${prefix}/updateTemplate`, // 更新模板（没有则新建）
     deleteTemplate: `${SLD.backend}${prefix}/deleteTemplate`, // 删除模板
+    copyTemplate: `${SLD.backend}${prefix}/copyTemplate`, // 复制模板
     getTemplateInfo: `${SLD.backend}${prefix}/getTemplateInfo`, // 获取模板信息
     getTemplateList: `${SLD.backend}${prefix}/getTemplateList`, // 获取模板列表
 

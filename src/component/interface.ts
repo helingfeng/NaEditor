@@ -97,3 +97,8 @@ export interface IBASE_DATA {
 export interface IContext {
     BASE_DATA: IBASE_DATA;
 }
+
+export enum TemplateType {
+    System,
+    User,
+}
