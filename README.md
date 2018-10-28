@@ -45,6 +45,8 @@
 * 图片懒加载优化
 * PWA
 * 重构interface.ts
+* 调研react-saga替换react-thunk
+* ~~图片懒加载优化~~ 2018.10.28 
 * ~~浏览页接入React服务端渲染~~ 2018.9.5
 
 

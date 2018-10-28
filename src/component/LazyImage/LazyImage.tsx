@@ -23,8 +23,8 @@ export default class LazyImage extends PureComponent<LazyImageProps, any> {
         const screenTop = body.scrollTop;
         (Array.from(document.querySelectorAll('img.lazy-img')) as HTMLImageElement[])
             .filter((img) => {
-                const imgTop = img.getBoundingClientRect().top;
-                return (imgTop > screenTop - screenHeight && imgTop < screenTop + screenHeight);
+                const top = offsetTop(img); // 目前图片相对文档顶端的距离
+                return top > screenTop - screenHeight * 0.5 && top < screenTop + screenHeight * 1.5;    // 前后各预加载半屏
             })
             .map((img) => {
                 const image = new Image();
@@ -36,7 +36,16 @@ export default class LazyImage extends PureComponent<LazyImageProps, any> {
                 };
 
             });
-    }, 100);
+
+        function offsetTop(el: HTMLElement) {
+            let result = 0;
+            while (el.parentElement !== null) {
+                result += el.offsetTop;
+                el = el.parentElement;
+            }
+            return result;
+        }
+    }, 150);
 
     constructor(props: LazyImageProps) {
         super(props);
