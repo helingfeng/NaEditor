@@ -42,7 +42,6 @@
 * 静态资源http2
 * 轮播组件使用react-loadable引入
 * 调研immutable
-* 图片懒加载优化
 * PWA
 * 重构interface.ts
 * 调研react-saga替换react-thunk
