@@ -8,6 +8,7 @@ import PropTypes from 'prop-types';
 import './ModuleList.less';
 import { IState } from '../interface';
 import INTERFACE from '../../common/script/INTERFACE';
+import isIpad from '../../common/script/isIpad';
 
 interface ModuleListProps {
     addModuleRequest: (args: any) => void;
@@ -58,7 +59,7 @@ class ModuleList extends Component<ModuleListProps, ModuleListState> {
     }
 
     moduleDragStart = (moduleTypeId: string, e: DragEvent) => {
-        e.dataTransfer.setData('moduleTypeId', moduleTypeId);
+        e.dataTransfer && e.dataTransfer.setData('moduleTypeId', moduleTypeId);
     }
 
     activeChange = (index: number) => {
@@ -96,6 +97,12 @@ class ModuleList extends Component<ModuleListProps, ModuleListState> {
                                         className="d-module-item"
                                         data-type-id={module.moduleTypeId}
                                         draggable={true}
+                                        onClick={() => {
+                                            // 如果是ipad，那么点击添加模块。PC端则不响应
+                                            if (isIpad()) {
+                                                this.addModule(module.moduleTypeId);
+                                            }
+                                        }}
                                         onDoubleClick={(e) => { this.addModule(module.moduleTypeId); }}
                                         onDragStart={this.moduleDragStart.bind(this, module.moduleTypeId)}
                                     >

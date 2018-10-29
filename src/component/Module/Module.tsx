@@ -16,6 +16,7 @@ interface ModuleProps {
     moduleData: IModuleData;
     moduleTopChange: any;
     moduleHeightChange: any;
+    render?: any;
 }
 
 interface ModuleState {
