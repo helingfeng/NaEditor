@@ -62,8 +62,8 @@ let result = merge(config, {
             }
         }),
         new MiniCssExtractPlugin({
-            filename: "[name].css",
-            chunkFilename: "[id].css"
+            filename: "[name].[chunkhash:8].css",
+            chunkFilename: "[id].[chunkhash:8].css"
         }),
         // new CleanWebpackPlugin(['dist']),
     ]),
