@@ -43,12 +43,13 @@
 * 商品库组件
 * 链接选择工具
 * 静态资源http2
-* 轮播组件使用react-loadable引入
+* 轮播组件使用React.Lazy引入
 * 调研immutable
 * PWA
 * 重构interface.ts
 * 调研react-saga替换react-thunk
 * 重构redux结构
+* 把本应该放到mapStateToProps里的逻辑从render中移过去
 * ~~图片懒加载优化~~ 2018.10.28 
 * ~~浏览页接入React服务端渲染~~ 2018.9.5
 

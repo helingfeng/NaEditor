@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PureComponent } from 'react';
 import { addModuleRequest } from '../../actions';
 import { connect } from 'react-redux';
 import axios from 'axios';
@@ -10,21 +10,21 @@ import { IState } from '../interface';
 import INTERFACE from '../../common/script/INTERFACE';
 import isIpad from '../../common/script/isIpad';
 
-interface ModuleListProps {
+interface IModuleListProps {
     addModuleRequest: (args: any) => void;
 }
 
-interface ModuleListState {
+interface IModuleListState {
     list: any;
 }
 
-class ModuleList extends Component<ModuleListProps, ModuleListState> {
+class ModuleList extends PureComponent<IModuleListProps, IModuleListState> {
 
     static contextTypes = {
         BASE_DATA: PropTypes.object,
     };
 
-    constructor(props: ModuleListProps) {
+    constructor(props: IModuleListProps) {
         super(props);
         this.addModule = this.addModule.bind(this);
         this.state = {
@@ -76,7 +76,6 @@ class ModuleList extends Component<ModuleListProps, ModuleListState> {
     }
 
     render() {
-
         const { list } = this.state;
         if (list.length > 0) {
             return (
@@ -123,9 +122,4 @@ class ModuleList extends Component<ModuleListProps, ModuleListState> {
     }
 }
 
-const mapStateToProps = (state: IState) => ({
-    moduleConfig: state.moduleConfig,
-    module: state.module,
-});
-
-export default connect(mapStateToProps, { addModuleRequest })(ModuleList);
+export default connect(null, { addModuleRequest })(ModuleList);

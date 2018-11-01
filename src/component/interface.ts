@@ -51,7 +51,7 @@ export interface ITempData {
 // moduleData接口定义
 export interface IModuleData {
     moduleTypeId: number;
-    moduleName: number;
+    moduleName: string;
     pageId: number;
     moduleId: number;
     data: any;

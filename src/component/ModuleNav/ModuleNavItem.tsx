@@ -6,7 +6,11 @@ import { Icon } from 'antd';
 import { showConfig, focusModule, removeModuleRequest, positionModuleRequest } from '../../actions';
 import { IState } from '../interface';
 
-interface ModuleNavItemProps {
+interface IModuleNavItemProps {
+    moduleId: number;
+    isActive: boolean;
+    isConfigVisible: boolean;
+    moduleName: string;
     showConfig?: any;
     moduleData?: any;
     moduleConfig?: any;
@@ -17,18 +21,18 @@ interface ModuleNavItemProps {
     positionModuleRequest: (args: any) => void;
 }
 
-interface ModuleNavItemState {
+interface IModuleNavItemState {
     isDragOver: boolean;
     isVisible: boolean;
 }
 
-class ModuleNavItem extends PureComponent<ModuleNavItemProps, ModuleNavItemState> {
+class ModuleNavItem extends PureComponent<IModuleNavItemProps, IModuleNavItemState> {
 
     static contextTypes = {
         BASE_DATA: PropTypes.object,
     };
 
-    constructor(props: ModuleNavItemProps) {
+    constructor(props: IModuleNavItemProps) {
         super(props);
         this.state = {
             isDragOver: false,
@@ -36,7 +40,7 @@ class ModuleNavItem extends PureComponent<ModuleNavItemProps, ModuleNavItemState
         };
     }
 
-    componentWillReceiveProps(nextProps: ModuleNavItemProps) {
+    componentWillReceiveProps(nextProps: IModuleNavItemProps) {
         if (nextProps.currentDrag === undefined) {
             this.setState({
                 isDragOver: false,
@@ -103,29 +107,23 @@ class ModuleNavItem extends PureComponent<ModuleNavItemProps, ModuleNavItemState
     render() {
 
         const {
+            isActive,
+            isConfigVisible,
+            moduleName,
             moduleData,
-            moduleConfig: {
-                isVisiable: isConfigVisiable,
-            },
-            moduleData: {
-                moduleName,
-                moduleId,
-                tempData: {
-                    isActive,
-                },
-            },
+            moduleId,
             showConfig,
             focusModule,
             removeModuleRequest,
         } = this.props;
 
-        const { isDragOver, isVisible } = this.state;
+        const { isDragOver } = this.state;
         const { pageId } = this.context.BASE_DATA;
         return (
             <React.Fragment>
                 <li
                     className={`d-module-nav-item ${isActive ? 'active' : ''}`}
-                    onClick={(e) => { focusModule(moduleId); if (isConfigVisiable) { showConfig(moduleData); } }}
+                    onClick={(e) => { focusModule(moduleId); if (isConfigVisible) { showConfig(moduleData); } }}
                     onDragStart={(e: any) => { this.onDragStart(e); }}
                     onDragEnter={(e: any) => { this.onDragEnter(e); }}
                     onDragOver={(e: React.DragEvent) => { e.preventDefault(); }}
@@ -153,10 +151,28 @@ class ModuleNavItem extends PureComponent<ModuleNavItemProps, ModuleNavItemState
     }
 }
 
-const mapStateToProps = (state: IState) => {
+const mapStateToProps = (state: IState, props: any) => {
+
+    const { moduleId } = props;
+
+    const module = state.module.moduleList.filter(v => v.moduleId === moduleId)[0];
+
+    const {
+        tempData: {
+            isActive,
+        },
+        moduleName,
+    } = module;
+
+    const {
+        isVisible: isConfigVisible,
+    } = state.moduleConfig;
+
     return {
-        module: state.module,
-        moduleConfig: state.moduleConfig,
+        isActive,
+        isConfigVisible,
+        moduleName,
+        moduleData: module,
     };
 };
 

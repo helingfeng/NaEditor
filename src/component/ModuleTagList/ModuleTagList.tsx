@@ -24,7 +24,7 @@ class ModuleTagList extends React.Component<ModuleTagListProps, ModuleTagListSta
 
         return (
             <div className={`d-module-tag-list`}>
-                {this.props.moduleList.map(v => <ModuleTag key={v.moduleId} moduleData={v} />)}
+                {this.props.moduleList.map(v => <ModuleTag key={v.moduleId} moduleId={v.moduleId} />)}
             </div>
         );
     }

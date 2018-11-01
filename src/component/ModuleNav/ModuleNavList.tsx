@@ -48,6 +48,7 @@ class ModuleNavList extends React.Component<ModuleNavListProps, ModuleNavListSta
                     {moduleList.map((v: IModuleData) => (
                         <ModuleNavItem
                             key={v.moduleId}
+                            moduleId={v.moduleId}
                             moduleData={v}
                             onDragedChange={this.onDragedChange}
                             currentDrag={currentDrag}

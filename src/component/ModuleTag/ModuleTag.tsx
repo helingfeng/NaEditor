@@ -5,46 +5,42 @@ import { Tooltip } from 'antd';
 import { focusModule } from '../../actions';
 import { IModuleData, IState } from '../interface';
 
-interface ModuleTagProps {
-    moduleData: IModuleData;
+interface IModuleTagProps {
+    moduleId: number;
     focusModule: (moduleId: number) => void;
+    top: number;
+    height: number;
+    isActive: boolean;
+    moduleName: string;
 }
 
-interface ModuleTagState {
+interface IModuleTagState {
 
 }
 
-class ModuleTag extends Component<ModuleTagProps, ModuleTagState> {
+class ModuleTag extends Component<IModuleTagProps, IModuleTagState> {
 
-    constructor(props: ModuleTagProps) {
+    constructor(props: IModuleTagProps) {
         super(props);
     }
 
     render() {
 
         const {
-            moduleData,
-            moduleData: {
-                moduleName,
-            },
+            moduleId,
+            moduleName,
             focusModule,
+            top,
+            height,
+            isActive,
         } = this.props;
-        let top;
-        let isActive;
-        let height;
-
-        if (moduleData.tempData) {
-            top = moduleData.tempData.top;
-            height = moduleData.tempData.height;
-            isActive = moduleData.tempData.isActive;
-        }
 
         return (
             <Tooltip title={moduleName} placement="left">
                 <div
                     className={`d-module-tag ${isActive ? 'active' : ''}`}
                     style={{ top, maxHeight: isActive ? '' : height }}
-                    onClick={() => { focusModule(moduleData.moduleId); }}
+                    onClick={() => { focusModule(moduleId); }}
                 >{moduleName}
                 </div>
             </Tooltip>
@@ -53,10 +49,29 @@ class ModuleTag extends Component<ModuleTagProps, ModuleTagState> {
 
 }
 
-const mapStateToProps = (state: IState) => {
+// TOOD:这里props为什么加类型会报错
+const mapStateToProps = (state: IState, props: any) => {
+
+    // 获取当前模块id
+    const { moduleId } = props;
+
+    // 筛选出本模块
+    const module: IModuleData = state.module.moduleList.filter(v => v.moduleId === moduleId)[0];
+
+    const {
+        tempData: {
+            top,
+            height,
+            isActive,
+        },
+        moduleName,
+    } = module;
 
     return {
-        module: state.module,
+        top,
+        height,
+        isActive,
+        moduleName,
     };
 };
 
