@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, Component } from 'react';
 import { connect } from 'react-redux';
 import { Tooltip } from 'antd';
 
@@ -14,13 +14,14 @@ interface ModuleTagState {
 
 }
 
-class ModuleTag extends PureComponent<ModuleTagProps, ModuleTagState> {
+class ModuleTag extends Component<ModuleTagProps, ModuleTagState> {
 
     constructor(props: ModuleTagProps) {
         super(props);
     }
 
     render() {
+
         const {
             moduleData,
             moduleData: {
@@ -31,11 +32,13 @@ class ModuleTag extends PureComponent<ModuleTagProps, ModuleTagState> {
         let top;
         let isActive;
         let height;
+
         if (moduleData.tempData) {
             top = moduleData.tempData.top;
             height = moduleData.tempData.height;
             isActive = moduleData.tempData.isActive;
         }
+
         return (
             <Tooltip title={moduleName} placement="left">
                 <div
@@ -51,6 +54,7 @@ class ModuleTag extends PureComponent<ModuleTagProps, ModuleTagState> {
 }
 
 const mapStateToProps = (state: IState) => {
+
     return {
         module: state.module,
     };

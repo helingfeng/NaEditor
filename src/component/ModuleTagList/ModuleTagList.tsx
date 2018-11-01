@@ -2,10 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import ModuleTag from '../ModuleTag';
-import { IModule, IState } from '../interface';
+import { IModule, IState, IModuleData } from '../interface';
 
 interface ModuleTagListProps {
-    module: IModule;
+    moduleList: IModuleData[];
 
 }
 
@@ -21,10 +21,10 @@ class ModuleTagList extends React.Component<ModuleTagListProps, ModuleTagListSta
     }
 
     render() {
-        const { moduleList } = this.props.module;
+
         return (
             <div className={`d-module-tag-list`}>
-                {moduleList.map(v => <ModuleTag key={v.moduleId} moduleData={v} />)}
+                {this.props.moduleList.map(v => <ModuleTag key={v.moduleId} moduleData={v} />)}
             </div>
         );
     }
@@ -32,7 +32,9 @@ class ModuleTagList extends React.Component<ModuleTagListProps, ModuleTagListSta
 }
 
 const mapStateToProps = (state: IState) => {
-    return { module: state.module };
+    return {
+        moduleList: state.module.moduleList,
+    };
 };
 
 export default connect(mapStateToProps, {
