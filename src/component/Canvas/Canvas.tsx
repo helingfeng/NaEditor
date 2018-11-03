@@ -186,7 +186,7 @@ class Canvas extends React.Component<ICanvasProps, ICanvasState> {
 }
 
 const mapStateToProps = (state: IState) => {
-    return { moduleList: state.module.moduleList };
+    return { moduleList: state.moduleList };
 };
 
 export default connect(mapStateToProps, {

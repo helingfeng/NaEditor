@@ -132,7 +132,7 @@ class ModuleWrap extends PureComponent<ModuleWrapProps, ModuleWrapState> {
 
 const mapStateToProps = (state: IState) => {
     return {
-        module: state.module,
+        moduleList: state.moduleList,
         moduleConfig: state.moduleConfig,
     };
 };

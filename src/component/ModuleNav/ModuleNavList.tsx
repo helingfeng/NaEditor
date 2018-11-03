@@ -8,7 +8,7 @@ import { IState, IModuleData } from '../interface';
 
 interface ModuleNavListProps {
     onClose: () => void;
-    module: any;
+    moduleList: IModuleData[];
 }
 
 interface ModuleNavListState {
@@ -35,7 +35,7 @@ class ModuleNavList extends React.Component<ModuleNavListProps, ModuleNavListSta
 
     render() {
 
-        const { onClose, module: { moduleList } } = this.props;
+        const { onClose, moduleList } = this.props;
         const { currentDrag } = this.state;
 
         return (
@@ -62,7 +62,7 @@ class ModuleNavList extends React.Component<ModuleNavListProps, ModuleNavListSta
 
 const mapStateToProps = (state: IState) => {
     return {
-        module: state.module,
+        moduleList: state.moduleList,
         moduleConfig: state.moduleConfig,
     };
 };

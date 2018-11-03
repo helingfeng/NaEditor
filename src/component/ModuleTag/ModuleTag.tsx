@@ -4,6 +4,7 @@ import { Tooltip } from 'antd';
 
 import { focusModule } from '../../actions';
 import { IModuleData, IState } from '../interface';
+// import { getModule } from '../../selectors';
 
 interface IModuleTagProps {
     moduleId: number;
@@ -56,7 +57,7 @@ const mapStateToProps = (state: IState, props: any) => {
     const { moduleId } = props;
 
     // 筛选出本模块
-    const module: IModuleData = state.module.moduleList.filter(v => v.moduleId === moduleId)[0];
+    const module: IModuleData = state.moduleList.filter(v => v.moduleId === moduleId)[0];
 
     const {
         tempData: {

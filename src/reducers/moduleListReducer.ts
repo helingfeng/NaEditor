@@ -1,7 +1,6 @@
-import { IState, IModule, IModuleData } from '../component/interface';
+import { IModuleData } from '../component/interface';
 import {
     ADD_MODULE,
-    REFRESH_MODULE,
     REFRESH_MODULE_LIST,
     REMOVE_MODULE,
     UPDATE_MODULE,
@@ -14,9 +13,8 @@ import {
 } from '../actions';
 
 import '../component/interface';
-import { access } from 'fs';
 
-export default (state: IModule = { moduleList: [] }, action: any) => {
+export default (moduleList: IModuleData[] = [], action: any) => {
     switch (action.type) {
         case ADD_MODULE:
             {
@@ -27,10 +25,10 @@ export default (state: IModule = { moduleList: [] }, action: any) => {
                 };
                 let newModuleList;
                 if (preModuleId === undefined) {
-                    newModuleList = state.moduleList.concat([moduleData]);
+                    newModuleList = moduleList.concat([moduleData]);
                 } else {
                     const init: IModuleData[] = [];
-                    newModuleList = state.moduleList.reduce((acc, v: IModuleData, i, array) => {
+                    newModuleList = moduleList.reduce((acc, v: IModuleData, i, array) => {
                         acc.push(v);
                         if (v.moduleId === preModuleId) {
                             acc.push(moduleData);
@@ -46,71 +44,59 @@ export default (state: IModule = { moduleList: [] }, action: any) => {
                     }
                     return v;
                 });
-                const result = Object.assign({}, state, { moduleList: newModuleList });
-                return result;
+                return newModuleList;
             }
         case REFRESH_MODULE_LIST: // 刷新整页
             {
                 const { moduleList } = action;
-                return {
-                    moduleList: moduleList.map((v: IModuleData) => {
-                        return Object.assign({}, v, {
-                            tempData: {
-                                isActive: false,
-                                top: 0,
-                                height: 0,
-                            },
-                        });
-                    }),
-                };
+                return moduleList.map((v: IModuleData) => {
+                    return Object.assign({}, v, {
+                        tempData: {
+                            isActive: false,
+                            top: 0,
+                            height: 0,
+                        },
+                    });
+                });
             }
 
         case REMOVE_MODULE: // 删除模块
             {
                 const { moduleId } = action;
-                let result;
-                if (state.moduleList) {
-                    return Object.assign({}, state, {
-                        moduleList: state.moduleList.filter(v => v.moduleId !== moduleId),
-                    });
+                if (moduleList) {
+                    return moduleList.filter(v => v.moduleId !== moduleId);
                 } else {
-                    return state;
+                    return moduleList;
                 }
             }
-            break;
         case UPDATE_MODULE: // 更新模块
             const { moduleData } = action;
             if (moduleData) {
                 const { moduleId } = moduleData;
-                const result = Object.assign({}, state, {
-                    moduleList: state.moduleList.map((v) => {
-                        if (v.moduleId === moduleId) {
-                            moduleData.tempData = v.tempData; // 带上临时数据
-                            return moduleData;
-                        } else {
-                            return v;
-                        }
-                    }),
+                return moduleList.map((v) => {
+                    if (v.moduleId === moduleId) {
+                        moduleData.tempData = v.tempData; // 带上临时数据
+                        return moduleData;
+                    } else {
+                        return v;
+                    }
                 });
-                return result;
             }
         case FOCUS_MODULE: // 聚焦模块
             {
                 const { moduleId } = action;
-                const result = Object.assign({}, state, {
-                    moduleList: state.moduleList.map(v => {
-                        v.moduleId === moduleId ?
-                            v.tempData = Object.assign({}, v.tempData, { isActive: true }) :
-                            v.tempData = Object.assign({}, v.tempData, { isActive: false });
-                        return v;
-                    }),
+
+                return moduleList.map(v => {
+                    v.moduleId === moduleId ?
+                        v.tempData = Object.assign({}, v.tempData, { isActive: true }) :
+                        v.tempData = Object.assign({}, v.tempData, { isActive: false });
+                    return v;
                 });
-                return result;
             }
         case POSITION_MODULE: // 移动模块
             {
                 const { moduleId, preModuleId } = action;
-                let { newModuleList, module } = state.moduleList.reduce((acc, v) => {
+                let { newModuleList, module } = moduleList.reduce((acc, v) => {
                     if (v.moduleId === moduleId) {
                         acc.module = v;
                     } else {
@@ -128,30 +114,24 @@ export default (state: IModule = { moduleList: [] }, action: any) => {
                     const preModuleIndex = newModuleList.findIndex((v: IModuleData) => v.moduleId === preModuleId);
                     newModuleList.splice(preModuleIndex + 1, 0, module);
                 }
-                const result = Object.assign({}, state, {
-                    moduleList: newModuleList,
-                });
-                return result;
+                return newModuleList;
             }
         case MODULE_TOP_CHANGE: // 模块top值变化
             {
                 const { moduleId, top } = action;
-                const newModuleList = state.moduleList.map(v => {
+                const newModuleList = moduleList.map(v => {
                     if (v.moduleId === moduleId) {
                         v.tempData = Object.assign({}, v.tempData, { top });
                     }
                     return v;
                 });
-                const result = Object.assign({}, state, {
-                    moduleList: newModuleList,
-                });
-                return result;
+                return newModuleList;
             }
         case ALL_MODULE_TOP_CHANGE: //  刷新某模块之后所有模块top值
             {
                 const { afterModuleId, topChange } = action;
                 let shouldChange = false;
-                const newModuleList = state.moduleList.reduce((acc: IModuleData[], v: IModuleData) => {
+                const newModuleList = moduleList.reduce((acc: IModuleData[], v: IModuleData) => {
                     if (shouldChange === true) {
                         v.tempData.top += topChange;
                     }
@@ -162,24 +142,18 @@ export default (state: IModule = { moduleList: [] }, action: any) => {
                     acc.push(v);
                     return acc;
                 }, []);
-                const result = Object.assign({}, state, {
-                    moduleList: newModuleList,
-                });
-                return result;
+                return newModuleList;
             }
         case MODULE_HEIGHT_CHANGE: // 模块height值变化
             {
                 const { moduleId, height } = action;
-                const newModuleList = state.moduleList.map(v => {
+                const newModuleList = moduleList.map(v => {
                     if (v.moduleId === moduleId) {
                         v.tempData = Object.assign({}, v.tempData, { height });
                     }
                     return v;
                 });
-                const result = Object.assign({}, state, {
-                    moduleList: newModuleList,
-                });
-                return result;
+                return newModuleList;
             }
         case COPY_MODULE:
             {
@@ -188,19 +162,16 @@ export default (state: IModule = { moduleList: [] }, action: any) => {
                 moduleData.tempData = {
                     isActive: true,
                 };
-                const newModuleList = state.moduleList.reduce((acc: IModuleData[], v: IModuleData) => {
+                const newModuleList = moduleList.reduce((acc: IModuleData[], v: IModuleData) => {
                     acc.push(v);
                     if (v.moduleId === prevModuleId) {
                         acc.push(moduleData);
                     }
                     return acc;
                 }, []);
-                const result = Object.assign({}, state, {
-                    moduleList: newModuleList,
-                });
-                return result;
+                return newModuleList;
             }
         default:
-            return state;
+            return moduleList;
     }
 };

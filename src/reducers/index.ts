@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux';
 
 import moduleConfig from './configReducer';
-import module from './moduleReducer';
+import moduleList from './moduleListReducer';
 
 export default combineReducers({
-    module,
+    moduleList,
     moduleConfig,
 });

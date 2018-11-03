@@ -155,7 +155,7 @@ const mapStateToProps = (state: IState, props: any) => {
 
     const { moduleId } = props;
 
-    const module = state.module.moduleList.filter(v => v.moduleId === moduleId)[0];
+    const module = state.moduleList.filter(v => v.moduleId === moduleId)[0];
 
     const {
         tempData: {

@@ -2,6 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { Icon, Button } from 'antd';
 
+import { IModuleData } from '../interface';
 import UserDefineConfig from '../UserDefineConfig';
 import { hideConfig, saveConfigRequest } from '../../actions';
 import ImageHotspotConfig from '../ImageHotspotConfig';
@@ -12,7 +13,7 @@ import FixedConfig from '../FixedConfig';
 import GoodsConfig from '../GoodsConfig';
 
 interface ConfigDialogProps {
-    module?: any;
+    moduleList?: IModuleData[];
     moduleConfig?: any;
     saveConfigRequest: any;
     hideConfig: any;
@@ -94,10 +95,9 @@ class ConfigDialog extends React.Component<ConfigDialogProps, any> {
     }
 
     render() {
-        const { module, hideConfig } = this.props;
+        const { hideConfig, moduleList } = this.props;
         const { moduleConfig } = this.state;
-        let activeModule = module.moduleList.filter((v: any) => v.tempData && v.tempData.isActive);
-        activeModule = activeModule && activeModule[0];
+        let activeModule = moduleList && moduleList.filter((v: any) => v.tempData && v.tempData.isActive)[0];
 
         if (moduleConfig.isVisiable && activeModule !== undefined) {
 
@@ -144,7 +144,7 @@ class ConfigDialog extends React.Component<ConfigDialogProps, any> {
 const mapStateToProps = (state: any) => {
     return {
         moduleConfig: state.moduleConfig,
-        module: state.module,
+        moduleList: state.moduleList,
     };
 };
 

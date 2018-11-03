@@ -179,9 +179,9 @@ class Module extends React.Component<ModuleProps, ModuleState> {
     }
 }
 
-const mapStateToProps = (state: IState) => {
-    return { module: state.module };
-};
+// const mapStateToProps = (state: IState) => {
+//     return { module: state.module };
+// };
 
 const dispatchProps = {
     moduleTopChange,
@@ -192,4 +192,4 @@ const mergeProps: any = (stateProps: any, dispatchProps: any, ownProps: any) => 
     return Object.assign({}, stateProps, dispatchProps, ownProps);
 };
 
-export default connect(mapStateToProps, dispatchProps, mergeProps, { withRef: true })(Module);
+export default connect(null, dispatchProps, mergeProps, { withRef: true })(Module);

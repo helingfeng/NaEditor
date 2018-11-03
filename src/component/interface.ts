@@ -1,3 +1,4 @@
+import { IModuleData } from './interface';
 import { ImageHotspotConfData } from './ImageHotspotConfig/interface';
 import { CarouselConfData } from './CarouselConfig/interface';
 import { LayerConfData } from './LayerConfig/interface';
@@ -68,13 +69,13 @@ export interface IModuleConfig {
 }
 
 // state中module定义
-export interface IModule {
-    moduleList: IModuleData[];
-}
+// export interface IModule {
+//     moduleList: IModuleData[];
+// }
 
 // state定义
 export interface IState {
-    module: IModule;
+    moduleList: IModuleData[];
     moduleConfig: IModuleConfig;
 }
 

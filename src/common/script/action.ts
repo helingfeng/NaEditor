@@ -1,5 +1,5 @@
 import { message } from 'antd';
-import { IModuleData, IModule } from './../../component/interface';
+import { IModuleData } from './../../component/interface';
 import INTERFACE from './INTERFACE';
 import axios from 'axios';
 import isServer from './isServer';

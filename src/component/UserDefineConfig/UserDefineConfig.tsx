@@ -71,7 +71,7 @@ class UserDefineConfig extends React.Component<UserDefineConfigProps, any> {
 
 const mapStateToProps = (state: any) => ({
     moduleConfig: state.moduleConfig,
-    module: state.module,
+    moduleList: state.moduleList,
 });
 
 export default connect(mapStateToProps, {}, undefined, { withRef: true })(UserDefineConfig);

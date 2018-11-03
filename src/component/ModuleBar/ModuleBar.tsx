@@ -4,10 +4,10 @@ import PropTypes from 'prop-types';
 import { Icon, Tooltip, message } from 'antd';
 
 import { showConfig, hideConfig, removeModuleRequest, positionModuleRequest, copyModuleRequest } from '../../actions';
-import { IModule, IState, IModuleConfig } from '../interface';
+import { IState, IModuleConfig, IModuleData } from '../interface';
 
 interface ModuleBarProps {
-    module: IModule;
+    moduleList: IModuleData[];
     positionModuleRequest: (args: any) => void;
     showConfig: any;
     moduleConfig: IModuleConfig;
@@ -35,7 +35,7 @@ class ModuleBar extends PureComponent<ModuleBarProps, ModuleBarState> {
      */
     up = (moduleId: number) => {
         const { pageId } = this.context.BASE_DATA;
-        const preModuleId = this.props.module.moduleList.reduce((acc, v, i, array) => {
+        const preModuleId = this.props.moduleList.reduce((acc, v, i, array) => {
             if (v.moduleId === moduleId) {
                 // 如果这不是第一个模块
                 if (i > 1) {
@@ -63,7 +63,7 @@ class ModuleBar extends PureComponent<ModuleBarProps, ModuleBarState> {
      */
     down = (moduleId: number) => {
         const { pageId } = this.context.BASE_DATA;
-        const preModuleId = this.props.module.moduleList.reduce((acc, v, i, array) => {
+        const preModuleId = this.props.moduleList.reduce((acc, v, i, array) => {
             if (v.moduleId === moduleId) {
                 let nextModule = array[i + 1];
                 if (nextModule !== undefined) {
@@ -97,8 +97,9 @@ class ModuleBar extends PureComponent<ModuleBarProps, ModuleBarState> {
 
     render() {
         const { pageId } = this.context.BASE_DATA;
-        const { showConfig, module, moduleConfig, hideConfig, removeModuleRequest } = this.props;
-        const activeModule = module.moduleList.filter((v) => v.tempData && v.tempData.isActive === true);
+        const { showConfig, moduleConfig, hideConfig, removeModuleRequest, moduleList } = this.props;
+
+        const activeModule = moduleList.filter((v) => v.tempData && v.tempData.isActive === true);
         const configVisiable = moduleConfig.isVisible;
         const activeModuleData = activeModule && activeModule[0];
         const activeModuleId = activeModuleData && activeModuleData.moduleId;
@@ -162,7 +163,7 @@ class ModuleBar extends PureComponent<ModuleBarProps, ModuleBarState> {
 
 const mapStateToProps = (state: IState) => {
     return {
-        module: state.module,
+        moduleList: state.moduleList,
         moduleConfig: state.moduleConfig,
     };
 };
