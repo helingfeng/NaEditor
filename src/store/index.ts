@@ -33,4 +33,6 @@ const store = createStore(reducer, initialState, composeEnhancers(
     // other store enhancers if any
 ));
 
+export const initialStore = initialState;
+
 export default store;

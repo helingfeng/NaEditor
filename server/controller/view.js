@@ -7,6 +7,7 @@ import ETag from 'etag';
 
 import { host } from '../../config';
 import reducer from '../../src/reducers';
+import { initialStore } from '../../src/store';
 import ContextProvider from '../../src/component/ContextProvider';
 import Canvas from '../../src/component/Canvas';
 import Action from '../../src/common/script/action';
@@ -18,7 +19,7 @@ const redis = new Redis({
 	db: 1
 });
 
-export default async(ctx, next) => {
+export default async (ctx, next) => {
 	let SsrSrcipt, str;
 	let { pageId } = ctx.request.query;
 	pageId = Number.parseInt(pageId);
@@ -39,20 +40,14 @@ export default async(ctx, next) => {
 			try {
 				const BASE_DATA = await Action.getInitData(2, pageId);
 				const moduleList = await Action.getAllModule(pageId);
-				const initialState = { module: { moduleList } };
+				const initialState = Object.assign({}, initialStore, { moduleList });
 				const store = createStore(reducer, initialState);
 
-				const View = ( <
-					Provider store = { store }
-                               >
-					<
-						ContextProvider BASE_DATA = { BASE_DATA }
-                    >
-						<
-							Canvas / >
-					<
-					/ContextProvider> <
-				/Provider>
+				const View = (<Provider store={store} >
+					<ContextProvider BASE_DATA={BASE_DATA} >
+						<Canvas />
+					</ContextProvider>
+				</Provider>
 				);
 
 				const page = await renderPage(View, store);
@@ -61,8 +56,8 @@ export default async(ctx, next) => {
 
 				SsrSrcipt = `
                     <script>window.BASE_DATA=${JSON.stringify(BASE_DATA)}</script>
-                    <script>window.__INITIAL_STATE__=${state}</script>
-                `;
+						<script>window.__INITIAL_STATE__=${state}</script>
+						`;
 			} catch (e) {
 				console.error(e);
 				// 服务端报错，丢到客户端兜底处理
@@ -97,7 +92,7 @@ export default async(ctx, next) => {
 function getPage(pageId) {
 	console.time(`pageId:${pageId} 取redis页面数据`);
 	return new Promise((resolve, reject) => {
-		redis.get(`page${pageId}`, function(err, result) {
+		redis.get(`page${pageId}`, function (err, result) {
 			console.timeEnd(`pageId:${pageId} 取redis页面数据`);
 			resolve(result);
 		});
@@ -107,7 +102,7 @@ function getPage(pageId) {
 function getETag(pageId) {
 	console.time(`pageId:${pageId} 取redis ETag数据`);
 	return new Promise((resolve, reject) => {
-		redis.get(`etag${pageId}`, function(err, result) {
+		redis.get(`etag${pageId}`, function (err, result) {
 			console.timeEnd(`pageId:${pageId} 取redis ETag数据`);
 			resolve(result);
 		});
