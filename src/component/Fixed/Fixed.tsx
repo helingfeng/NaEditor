@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import { Icon } from 'antd';
@@ -15,7 +15,7 @@ interface FixedState {
 
 }
 
-export default class Fixed extends PureComponent<FixedProps, FixedState> {
+export default class Fixed extends Component<FixedProps, FixedState> {
 
     static contextTypes = {
         BASE_DATA: PropTypes.object,

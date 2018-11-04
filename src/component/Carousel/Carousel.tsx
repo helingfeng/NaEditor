@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import Slider from 'react-slick';
 
 import Module from '../Module';
@@ -12,7 +12,7 @@ interface CarouselState {
 
 }
 
-export default class Carousel extends PureComponent<CarouselProps, CarouselState> {
+export default class Carousel extends Component<CarouselProps, CarouselState> {
     constructor(props: CarouselProps) {
         super(props);
     }
