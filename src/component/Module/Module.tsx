@@ -174,7 +174,7 @@ class Module extends React.Component<ModuleProps, ModuleState> {
                 {!isEmpty && this.props.children}
                 {isDecorate && <ModuleWrap
                     moduleData={moduleData}
-                    moduleRef={this.moduleRef}
+                    moduleRef={this.moduleRef.current}
                 />}
             </div>
         );

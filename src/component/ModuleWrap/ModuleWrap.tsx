@@ -44,6 +44,7 @@ class ModuleWrap extends Component<ModuleWrapProps, ModuleWrapState> {
             this.setState({
                 nextPlaceholder: placeholder,
             }, () => {
+                console.log(placeholder, moduleRef);
                 insertAfter(placeholder, moduleRef);
                 (window as any).resizeIframe();
 
@@ -105,9 +106,6 @@ class ModuleWrap extends Component<ModuleWrapProps, ModuleWrapState> {
             moduleData: {
                 tempData,
                 moduleId,
-            },
-            moduleConfig: {
-                isVisible: isConfigVisible,
             },
             showConfig,
             focusModule } = this.props;
