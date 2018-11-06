@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
@@ -20,7 +20,7 @@ interface ModuleWrapState {
     nextPlaceholder?: HTMLDivElement;
 }
 
-class ModuleWrap extends PureComponent<ModuleWrapProps, ModuleWrapState> {
+class ModuleWrap extends Component<ModuleWrapProps, ModuleWrapState> {
 
     static contextTypes = {
         BASE_DATA: PropTypes.object,
@@ -146,7 +146,7 @@ export default connect(mapStateToProps, {
 
 function insertAfter(newEl: HTMLElement, targetEl: HTMLElement) {
     let parentEl = targetEl.parentNode;
-    if (parentEl === null) {
+    if (!parentEl) {
         return;
     }
     if (parentEl.lastChild === targetEl) {

@@ -54,6 +54,7 @@ class Module extends React.Component<ModuleProps, ModuleState> {
 
     componentWillReceiveProps(nextProps: ModuleProps) {
         const { moduleData } = nextProps;
+
         this.setState({
             moduleData,
         });
@@ -77,8 +78,9 @@ class Module extends React.Component<ModuleProps, ModuleState> {
     reatChange() {
         const { moduleTopChange, moduleHeightChange } = this.props;
         const { moduleData } = this.state;
-        const clientRect = this.moduleRef.getBoundingClientRect();
+        const clientRect = this.moduleRef.current.getBoundingClientRect();
         const { height, top } = clientRect;
+
         if (!moduleData.tempData || top !== moduleData.tempData.top) {
             moduleTopChange(moduleData.moduleId, top);
             if (moduleData.tempData.isActive === true) {
@@ -92,7 +94,7 @@ class Module extends React.Component<ModuleProps, ModuleState> {
 
     scrollIntoView() {
         debounce(async () => {
-            const clientRect = this.moduleRef.getBoundingClientRect();
+            const clientRect = this.moduleRef.current.getBoundingClientRect();
             const { top } = clientRect;
             const container = document.querySelector('.J_editorInstanceArea');
 
@@ -107,10 +109,10 @@ class Module extends React.Component<ModuleProps, ModuleState> {
                 if (ratio < 1 && container) {
                     animate(top - 50, 200);
                 }
-                this.moduleRef && intersectionObserver.unobserve(this.moduleRef);
+                this.moduleRef.current && intersectionObserver.unobserve(this.moduleRef.current);
 
             });
-            intersectionObserver.observe(this.moduleRef);
+            intersectionObserver.observe(this.moduleRef.current);
         }, 0)();
 
         function animate(end: number, time: number) {
@@ -166,7 +168,7 @@ class Module extends React.Component<ModuleProps, ModuleState> {
             <div
                 className={`J_module d-module ${isActive ? 'active' : ''}`}
                 data-module-type-id={moduleTypeId}
-                ref={ref => this.moduleRef = ref}
+                ref={this.moduleRef}
                 style={moduleStyle}
             >
                 {!isEmpty && this.props.children}
@@ -179,9 +181,9 @@ class Module extends React.Component<ModuleProps, ModuleState> {
     }
 }
 
-// const mapStateToProps = (state: IState) => {
-//     return { module: state.module };
-// };
+const mapStateToProps = (state: IState) => {
+    return { moduleList: state.moduleList };
+};
 
 const dispatchProps = {
     moduleTopChange,
@@ -192,4 +194,4 @@ const mergeProps: any = (stateProps: any, dispatchProps: any, ownProps: any) => 
     return Object.assign({}, stateProps, dispatchProps, ownProps);
 };
 
-export default connect(null, dispatchProps, mergeProps, { withRef: true })(Module);
+export default connect(mapStateToProps, dispatchProps, mergeProps, { withRef: true })(Module);
