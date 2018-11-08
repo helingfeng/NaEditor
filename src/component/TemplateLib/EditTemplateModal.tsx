@@ -8,11 +8,38 @@ const { Search, TextArea } = Input;
 
 import INTERFACE from '../../common/script/INTERFACE';
 import { EditType } from './interface';
+import { IModuleType } from '../interface';
 
 interface TemplateFormProps extends FormComponentProps {
 }
 
-class TemplateForm extends React.Component<TemplateFormProps, any> {
+interface ITemplateFormState {
+    moduleList: IModuleType[];
+}
+
+class TemplateForm extends React.Component<TemplateFormProps, ITemplateFormState> {
+
+    constructor(props: TemplateFormProps) {
+        super(props);
+        this.state = {
+            moduleList: [],
+        };
+    }
+
+    async componentDidMount() {
+        const result = (await axios(INTERFACE.getModuleList)).data;
+        if (result.success === true) {
+            const moduleList = result.data.reduce((acc: IModuleType[], v: any) => {
+                (v.list as any).map((v: IModuleType) => {
+                    acc.push(v);
+                });
+                return acc;
+            }, []);
+            this.setState({
+                moduleList,
+            });
+        }
+    }
 
     handleSubmit = () => {
         return new Promise((resolve, reject) => {
@@ -35,6 +62,7 @@ class TemplateForm extends React.Component<TemplateFormProps, any> {
 
     render() {
         const { getFieldDecorator } = this.props.form;
+        const { moduleList } = this.state;
         return (
             <Form>
                 <FormItem label="模板名称">
@@ -48,7 +76,11 @@ class TemplateForm extends React.Component<TemplateFormProps, any> {
                     {getFieldDecorator('moduleType', {
                         rules: [{ required: true, message: '请输入模块类型' }],
                     })(
-                        <Input placeholder="请输入模块类型" />,
+                        <Select
+                            placeholder="选择模块类型"
+                        >
+                            {moduleList ? moduleList.map((v: IModuleType) => <Option key={v.id} value={v.moduleTypeId}>{v.moduleName}</Option>) : null}
+                        </Select>,
                     )}
                 </FormItem>
                 <FormItem

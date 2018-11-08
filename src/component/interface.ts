@@ -62,6 +62,13 @@ export interface IModuleData {
     tempData: ITempData;
 }
 
+export interface IModuleType {
+    id: number;
+    moduleTypeId: number;
+    moduleName: string;
+    iconUrl: string;
+}
+
 // moduleConfig接口定义
 export interface IModuleConfig {
     isVisible: boolean;
