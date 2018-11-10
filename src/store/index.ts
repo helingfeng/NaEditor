@@ -35,4 +35,8 @@ const store = createStore(reducer, initialState, composeEnhancers(
 
 export const initialStore = initialState;
 
+if (!isServer()) {
+    (window as any).store = store;
+}
+
 export default store;

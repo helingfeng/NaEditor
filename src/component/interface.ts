@@ -1,4 +1,4 @@
-import { IModuleData } from './interface';
+import { IModuleData, ITemplateInfo } from './interface';
 import { ImageHotspotConfData } from './ImageHotspotConfig/interface';
 import { CarouselConfData } from './CarouselConfig/interface';
 import { LayerConfData } from './LayerConfig/interface';
@@ -80,10 +80,25 @@ export interface IModuleConfig {
 //     moduleList: IModuleData[];
 // }
 
+export interface Itemplate {
+    id: number;
+    moduleType: number;
+    template: string;
+    style: string;
+    templateBabeled: string;
+    templateFn: any;
+}
+
+// TemplateList定义
+export interface ITemplateList {
+    [templateId: string]: Itemplate;
+}
+
 // state定义
 export interface IState {
     moduleList: IModuleData[];
     moduleConfig: IModuleConfig;
+    templateList: ITemplateList;
 }
 
 // pageType

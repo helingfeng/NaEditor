@@ -7,12 +7,21 @@ export default (style: string, pageType: PageType, id?: string) => {
     node.type = 'text/css';
     node.innerHTML = style;
     id && (node.id = id);
-    document.head && document.head.appendChild(node);
     // 装修页，样式放到iframe里面去
     if (pageType === PageType.Decorate) {
         const iframeDom = (document.querySelector('.J_canvas') as HTMLIFrameElement).contentDocument;
-        iframeDom && iframeDom.head && iframeDom.head.appendChild(node);
+        let oldStyle = (iframeDom as Document).querySelector(`#${id}`);
+        if (oldStyle !== null) {
+            oldStyle = node;
+        } else {
+            iframeDom && iframeDom.head && iframeDom.head.appendChild(node);
+        }
     } else {
-        document && document.head && document.head.appendChild(node);
+        let oldStyle = (document as Document).querySelector(`#${id}`);
+        if (oldStyle !== null) {
+            oldStyle = node;
+        } else {
+            document && document.head && document.head.appendChild(node);
+        }
     }
 };

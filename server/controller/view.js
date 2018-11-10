@@ -5,7 +5,7 @@ import fs from 'fs';
 import Redis from 'ioredis';
 import ETag from 'etag';
 
-import { host } from '../../config';
+// import { host } from '../../config';
 import reducer from '../../src/reducers';
 import { initialStore } from '../../src/store';
 import ContextProvider from '../../src/component/ContextProvider';
@@ -15,7 +15,8 @@ import renderPage from '../service/renderPage';
 
 const redis = new Redis({
 	port: 6379, // Redis port
-	host, // Redis host
+	// host, // Redis host
+	host: '127.0.0.1',
 	db: 1
 });
 
@@ -91,7 +92,7 @@ export default async (ctx, next) => {
 
 function getPage(pageId) {
 	console.time(`pageId:${pageId} 取redis页面数据`);
-	return new Promise((resolve, reject) => {
+	return new Promise((resolve) => {
 		redis.get(`page${pageId}`, function (err, result) {
 			console.timeEnd(`pageId:${pageId} 取redis页面数据`);
 			resolve(result);
@@ -101,7 +102,7 @@ function getPage(pageId) {
 
 function getETag(pageId) {
 	console.time(`pageId:${pageId} 取redis ETag数据`);
-	return new Promise((resolve, reject) => {
+	return new Promise((resolve) => {
 		redis.get(`etag${pageId}`, function (err, result) {
 			console.timeEnd(`pageId:${pageId} 取redis ETag数据`);
 			resolve(result);

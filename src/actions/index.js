@@ -1,7 +1,5 @@
 import Action from '../common/script/action';
 
-
-
 export const REFRESH_MODULE = 'REFRESH_MODULE';
 export const refreshModule = (moduleData) => {
 	return {
@@ -18,7 +16,6 @@ export const refreshModuleList = (moduleList) => {
 	};
 };
 
-
 // 添加模块
 export const ADD_MODULE = 'ADD_MODULE';
 export const addModule = ({ moduleData, preModuleId }) => ({
@@ -26,7 +23,6 @@ export const addModule = ({ moduleData, preModuleId }) => ({
 	moduleData,
 	preModuleId,
 });
-
 
 // 添加模块请求
 export const ADD_MODULE_REQUEST = 'ADD_MODULE_REQUEST';
@@ -40,7 +36,6 @@ export const addModuleRequest = (args) => {
 		return moduleData;
 	};
 };
-
 
 // 删除模块
 export const REMOVE_MODULE = 'REMOVE_MODULE';
@@ -66,7 +61,7 @@ export const showConfig = (moduleData) => {
 
 	return {
 		type: SHOW_CONFIG,
-		moduleData
+		moduleData,
 	};
 };
 
@@ -78,7 +73,6 @@ export const hideConfig = () => {
 	};
 };
 
-
 // 聚焦模块
 export const FOCUS_MODULE = 'FOCUS_MODULE';
 export const focusModule = (moduleId) => {
@@ -87,9 +81,6 @@ export const focusModule = (moduleId) => {
 		moduleId,
 	};
 };
-
-
-
 
 // 更新模块
 export const UPDATE_MODULE = 'UPDATE_MODULE';
@@ -129,14 +120,13 @@ export const positionModuleRequest = (args) => {
 	};
 };
 
-
 // 复制模块
 export const COPY_MODULE = 'COPY_MODULE';
 export const copyModule = ({ prevModuleId, moduleData }) => {
 	return {
 		type: COPY_MODULE,
 		prevModuleId,
-		moduleData
+		moduleData,
 	};
 };
 
@@ -190,4 +180,21 @@ export const fetchModuleList = (pageId) => {
 		dispatch(refreshModuleList(await Action.getAllModule(pageId)));
 	};
 
+};
+
+// 模板变化
+// export const FETCH_TEMPLATE = 'FETCH_TEMPLATE';
+// export const fetchTemplate = (templateId) => {
+// 	return async(dispatch) => {
+// 		dispatch(await getTemplateInfo(template));
+// 	};
+// };
+
+// 更新模板
+export const UPDATE_TEMPLATE = 'UPDATE_TEMPLATE';
+export const updateTemplate = (templateInfo) => {
+	return {
+		type: UPDATE_TEMPLATE,
+		templateInfo,
+	};
 };

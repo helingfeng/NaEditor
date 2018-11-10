@@ -1,36 +1,37 @@
 import React, { Component, ReactElement } from 'react';
 import PropTypes from 'prop-types';
-import { IModuleData, IGoodsInfo, IContext } from '../interface';
+import { IModuleData, IGoodsInfo, IContext, IState, ITemplateList, Itemplate } from '../interface';
 import Module from '../Module';
 import Axios from '../../../node_modules/axios';
 import INTERFACE from '../../common/script/INTERFACE';
 import addStyle from '../../common/script/addStyle';
 import isServer from '../../common/script/isServer';
+import { connect } from 'react-redux';
+import { updateTemplate } from '../../actions';
 
 if (!isServer()) {
     (window as any).React = React;
     (window as any).template = {};
 }
 
-interface GoodsProps {
+interface IGoodsProps {
     moduleData: IModuleData;
+    template: Itemplate;
+    updateTemplate: any;
 }
 
-interface GoodsState {
+interface IGoodsState {
     skuids: string;
     goodsList: IGoodsInfo[];
-    templateId?: number;
-    style?: string;
-    template?: any;
 }
 
-export default class Goods extends Component<GoodsProps, GoodsState> {
+class Goods extends Component<IGoodsProps, IGoodsState> {
 
     static contextTypes = {
         BASE_DATA: PropTypes.object,
     };
 
-    constructor(props: GoodsProps) {
+    constructor(props: IGoodsProps) {
         super(props);
         const { moduleData } = this.props;
         let { data: { skuids, goodsList } } = moduleData;
@@ -67,18 +68,25 @@ export default class Goods extends Component<GoodsProps, GoodsState> {
             },
         })).data;
         if (result.success) {
-            const { templateBabeled, style, id } = result.data;
-            const { BASE_DATA: { pageType } } = this.context as IContext;
-            new Function(templateBabeled)();
-            const template = (window as any).template[id];
-            this.setState({
-                style,
-                template,
-            });
+            const { updateTemplate } = this.props;
+            console.log(result.data);
+            updateTemplate(result.data);
         }
     }
 
-    componentWillReceiveProps(nextProps: GoodsProps) {
+    componentDidMount() {
+        const {
+            moduleData: {
+                data: {
+                    templateId,
+                },
+            },
+        } = this.props;
+
+        this.fetchTemplate(templateId);
+    }
+
+    componentWillReceiveProps(nextProps: IGoodsProps) {
         const { skuids, templateId } = nextProps.moduleData.data;
         if (skuids !== this.state.skuids) {
             this.setState({
@@ -87,12 +95,17 @@ export default class Goods extends Component<GoodsProps, GoodsState> {
                 this.requestGoodsInfo(skuids);
             });
         }
-        if (templateId !== this.state.templateId) {
-            this.setState({
-                templateId,
-            }, () => {
-                this.fetchTemplate(templateId);
-            });
+
+        const {
+            moduleData: {
+                data: {
+                    templateId: currentTemplateId,
+                },
+            },
+        } = this.props;
+
+        if (currentTemplateId !== templateId) {
+            this.fetchTemplate(templateId);
         }
     }
 
@@ -108,10 +121,13 @@ export default class Goods extends Component<GoodsProps, GoodsState> {
         });
     }
 
-    componentDidUpdate(prevProps: GoodsProps, prevState: GoodsState) {
-        const { style, template, templateId } = this.state;
-        if (style && style !== prevState.style) {
-            addStyle(style, this.context.BASE_DATA.pageType, `${templateId}`);
+    componentDidUpdate(prevProps: IGoodsProps, prevState: IGoodsState) {
+        if (!this.props.template) {
+            return;
+        }
+        const { style, id } = this.props.template;
+        if (!prevProps.template || prevProps.template.style !== style) {
+            addStyle(style, this.context.BASE_DATA.pageType, `templateStyle_${id}`);
         }
     }
 
@@ -121,11 +137,33 @@ export default class Goods extends Component<GoodsProps, GoodsState> {
 
     render() {
         const { moduleData } = this.props;
-        const { template } = this.state;
+        const { template } = this.props;
+
         return (
             <Module moduleData={moduleData}>
-                {typeof template === 'function' ? template.call(this) : null}
+                {template && template.templateFn && typeof template.templateFn === 'function' ? template.templateFn.call(this) : null}
             </Module>
         );
     }
 }
+
+const mapStateToProps = (state: IState, props: any) => {
+
+    const {
+        moduleData: {
+            data: {
+                templateId,
+            },
+        },
+    } = props;
+
+    const template = state.templateList[templateId];
+
+    return Object.assign({}, props, {
+        template: template ? template : null,
+    });
+};
+
+export default connect(mapStateToProps, {
+    updateTemplate,
+})(Goods);
