@@ -234,7 +234,7 @@ class TemplateLibModal extends React.Component<TemplateLibModalProps, TemplateLi
                         okText="确定"
                         cancelText="取消"
                         onConfirm={(e) => {
-                            e.stopPropagation();
+                            e && e.stopPropagation();
                             this.deleteTemplate(v.id);
                         }}
                     >

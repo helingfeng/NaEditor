@@ -122,7 +122,7 @@ class ManagePage extends React.Component<any, any> {
                             复制页面
                         </a>
                         <Popconfirm
-                            onConfirm={(e) => { e.stopPropagation(); this.deletePage(item.id); }}
+                            onConfirm={(e?: React.MouseEvent) => { e && e.stopPropagation(); this.deletePage(item.id); }}
                             title="确定删除该页面吗？"
                             okText="确定"
                             cancelText="取消"

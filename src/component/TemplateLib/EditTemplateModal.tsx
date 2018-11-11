@@ -79,7 +79,7 @@ class TemplateForm extends React.Component<TemplateFormProps, ITemplateFormState
                         <Select
                             placeholder="选择模块类型"
                         >
-                            {moduleList ? moduleList.map((v: IModuleType) => <Option key={v.id} value={v.moduleTypeId}>{v.moduleName}</Option>) : null}
+                            {moduleList ? moduleList.map((v: IModuleType) => <Option key={v.id + ''} value={v.moduleTypeId}>{v.moduleName}</Option>) : null}
                         </Select>,
                     )}
                 </FormItem>
