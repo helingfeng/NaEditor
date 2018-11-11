@@ -41,6 +41,7 @@
         "date-format": "^1.2.0",
         "etag": "^1.8.1",
         "for-own": "^1.0.0",
+        "gzip-size": "^5.0.0",
         "html-escaper": "^1.0.1",
         "immutability-helper": "^2.8.1",
         "intersection-observer": "^0.5.0",
