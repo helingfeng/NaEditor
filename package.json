@@ -27,7 +27,7 @@
         "@types/jquery": "^3.3.6",
         "@types/js-cookie": "^2.1.0",
         "@types/lodash": "^4.14.116",
-        "@types/prop-types": "^15.5.5",
+        "@types/prop-types": "^15.5.8",
         "@types/qrcode.react": "^0.8.1",
         "@types/react": "~16.4.18",
         "@types/react-dom": "^16.0.9",
