@@ -18,6 +18,7 @@ interface IPage {
     pageName: string;
     moduleList: number[];
     created: string;
+    updated: string;
 }
 
 class ManagePage extends React.Component<any, any> {
@@ -102,6 +103,12 @@ class ManagePage extends React.Component<any, any> {
             key: 'created',
             render: (item: IPage) => {
                 return format.asString('yyyy-MM-dd hh:mm:ss', new Date(item.created));
+            },
+        }, {
+            title: '更新时间',
+            key: 'updated',
+            render: (item: IPage) => {
+                return format.asString('yyyy-MM-dd hh:mm:ss', new Date(item.updated));
             },
         }, {
             title: '操作',
