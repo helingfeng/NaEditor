@@ -21,6 +21,9 @@ const HtmlWebpackPlugins = glob.sync('src/page/*/index.html').map((v) => {
         template: v,
         chunks: [`page/${name}`],
         favicon: path.join(__dirname, '/src/assets/images/bitbug_favicon.ico'),
+        minify: {
+            removeComments: true
+        }
     })
 });
 
