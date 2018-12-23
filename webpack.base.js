@@ -6,6 +6,7 @@ const entryList = glob.sync('src/page/*/index.js');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const isAnalyze = process.env.npm_config_argv.includes('analyze');
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
+const HappyPack = require('happypack');
 
 let cliEntry = process.env.npm_config_argv.match(/--entry=([\w]+)/);
 
@@ -30,8 +31,14 @@ const sourcePath = path.join(__dirname, '/src');
 
 let plugins = [
     new LodashModuleReplacementPlugin(),
+    new HappyPack({
+        id: 'happybabel',
+        loaders: [{
+            loader: 'babel-loader',
+        }],
+        threads: 4,
+    })
 ];
-
 
 // const HtmlWebpackPlugins = [
 //     new HtmlWebpackPlugin({
@@ -128,7 +135,7 @@ module.exports = {
                     path.resolve(__dirname, 'src'),
                     path.resolve(__dirname, 'config.js'),
                 ],
-                use: ['babel-loader', ]
+                use: 'happypack/loader?id=happybabel'
             },
 
             // {
