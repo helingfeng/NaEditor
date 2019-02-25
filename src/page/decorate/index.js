@@ -10,13 +10,13 @@ import ContextProvider from '../../component/ContextProvider';
 import Action from '../../common/script/action';
 import './index.less';
 
-Action.getInitData(0).then((BASE_DATA) => {
-	ReactDom.render(
-		<Provider store={store} >
-			<ContextProvider BASE_DATA={BASE_DATA}>
-				<Decorate />
-			</ContextProvider>
-		</Provider>,
-		document.querySelector('#app'),
-	);
+Action.getInitData(0).then(BASE_DATA => {
+  ReactDom.render(
+    <Provider store={store}>
+      <ContextProvider BASE_DATA={BASE_DATA}>
+        <Decorate />
+      </ContextProvider>
+    </Provider>,
+    document.querySelector('#app'),
+  );
 });

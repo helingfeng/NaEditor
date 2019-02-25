@@ -7,68 +7,72 @@ import { showConfig, focusModule, removeModuleRequest } from '../../actions';
 import { IState, IModuleData } from '../interface';
 
 interface ModuleNavListProps {
-    onClose: () => void;
-    moduleList: IModuleData[];
+  onClose: () => void;
+  moduleList: IModuleData[];
 }
 
 interface ModuleNavListState {
-    currentDrag?: number;
+  currentDrag?: number;
 }
 
-class ModuleNavList extends React.Component<ModuleNavListProps, ModuleNavListState> {
+class ModuleNavList extends React.Component<
+  ModuleNavListProps,
+  ModuleNavListState
+> {
+  constructor(props: ModuleNavListProps) {
+    super(props);
+    this.state = {
+      currentDrag: undefined,
+    };
+  }
 
-    constructor(props: ModuleNavListProps) {
-        super(props);
-        this.state = {
-            currentDrag: undefined,
-        };
-    }
+  /**
+   * 当前被拖动的元素发生改变
+   */
+  onDragedChange = (moduleId: number | undefined) => {
+    this.setState({
+      currentDrag: moduleId,
+    });
+  };
 
-    /**
-     * 当前被拖动的元素发生改变
-     */
-    onDragedChange = (moduleId: number | undefined) => {
-        this.setState({
-            currentDrag: moduleId,
-        });
-    }
+  render() {
+    const { onClose, moduleList } = this.props;
+    const { currentDrag } = this.state;
 
-    render() {
-
-        const { onClose, moduleList } = this.props;
-        const { currentDrag } = this.state;
-
-        return (
-            <div className="d-module-nav-list">
-                <div className="d-header">
-                    <p className="d-modal-title">模块导航</p>
-                    <Icon className="d-close-icon" type="close" onClick={onClose} />
-                </div>
-                <ul>
-                    {moduleList.map((v: IModuleData) => (
-                        <ModuleNavItem
-                            key={v.moduleId}
-                            moduleId={v.moduleId}
-                            moduleData={v}
-                            onDragedChange={this.onDragedChange}
-                            currentDrag={currentDrag}
-                        />
-                    ))}
-                </ul>
-            </div>
-        );
-    }
+    return (
+      <div className="d-module-nav-list">
+        <div className="d-header">
+          <p className="d-modal-title">模块导航</p>
+          <Icon className="d-close-icon" type="close" onClick={onClose} />
+        </div>
+        <ul>
+          {moduleList.map((v: IModuleData) => (
+            <ModuleNavItem
+              key={v.moduleId}
+              moduleId={v.moduleId}
+              moduleData={v}
+              onDragedChange={this.onDragedChange}
+              currentDrag={currentDrag}
+            />
+          ))}
+        </ul>
+      </div>
+    );
+  }
 }
 
 const mapStateToProps = (state: IState) => {
-    return {
-        moduleList: state.moduleList,
-        moduleConfig: state.moduleConfig,
-    };
+  return {
+    moduleList: state.moduleList,
+    moduleConfig: state.moduleConfig,
+  };
 };
 
-export default connect(mapStateToProps, {
+export default connect(
+  mapStateToProps,
+  {
     showConfig,
     focusModule,
     removeModuleRequest,
-})(ModuleNavList);
+  },
+)(ModuleNavList);

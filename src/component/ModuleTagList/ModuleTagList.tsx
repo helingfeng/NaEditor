@@ -5,36 +5,40 @@ import ModuleTag from '../ModuleTag';
 import { IState, IModuleData } from '../interface';
 
 interface ModuleTagListProps {
-    moduleList: IModuleData[];
+  moduleList: IModuleData[];
 }
 
-interface ModuleTagListState {
+interface ModuleTagListState {}
 
-}
+class ModuleTagList extends React.Component<
+  ModuleTagListProps,
+  ModuleTagListState
+> {
+  constructor(props: ModuleTagListProps) {
+    super(props);
+  }
 
-class ModuleTagList extends React.Component<ModuleTagListProps, ModuleTagListState> {
-
-    constructor(props: ModuleTagListProps) {
-        super(props);
-
-    }
-
-    render() {
-        const { moduleList } = this.props;
-        return (
-            <div className={`d-module-tag-list`}>
-                {moduleList.length ? moduleList.map(v => <ModuleTag key={v.moduleId} moduleId={v.moduleId} />) : null}
-            </div>
-        );
-    }
-
+  render() {
+    const { moduleList } = this.props;
+    return (
+      <div className={`d-module-tag-list`}>
+        {moduleList.length
+          ? moduleList.map(v => (
+              <ModuleTag key={v.moduleId} moduleId={v.moduleId} />
+            ))
+          : null}
+      </div>
+    );
+  }
 }
 
 const mapStateToProps = (state: IState) => {
-    return {
-        moduleList: state.moduleList,
-    };
+  return {
+    moduleList: state.moduleList,
+  };
 };
 
-export default connect(mapStateToProps, {
-})(ModuleTagList);
+export default connect(
+  mapStateToProps,
+  {},
+)(ModuleTagList);

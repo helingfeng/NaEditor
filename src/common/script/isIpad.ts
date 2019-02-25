@@ -1,3 +1,3 @@
 export default () => {
-    return /ipad/i.test(navigator.userAgent);
+  return /ipad/i.test(navigator.userAgent);
 };

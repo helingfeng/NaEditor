@@ -5,52 +5,47 @@ import Module from '../Module';
 import { IModuleData, ImageInfo } from '../interface';
 
 interface CarouselProps {
-    moduleData: IModuleData;
+  moduleData: IModuleData;
 }
 
-interface CarouselState {
-
-}
+interface CarouselState {}
 
 export default class Carousel extends Component<CarouselProps, CarouselState> {
-    constructor(props: CarouselProps) {
-        super(props);
-    }
+  constructor(props: CarouselProps) {
+    super(props);
+  }
 
-    renderSlider = (imgs: ImageInfo[]) => {
-        const settings = {
-            dots: true,
-            infinite: true,
-            speed: 500,
-            slidesToShow: 1,
-            slidesToScroll: 1,
-            autoplay: true,
-            autoplaySpeed: 800,
-        };
-        return (
-            <Slider {...settings}>
-                {imgs.map((v, i) => (<div key={i}><img src={v.url} /></div>))}
-            </Slider>
-        );
+  renderSlider = (imgs: ImageInfo[]) => {
+    const settings = {
+      dots: true,
+      infinite: true,
+      speed: 500,
+      slidesToShow: 1,
+      slidesToScroll: 1,
+      autoplay: true,
+      autoplaySpeed: 800,
+    };
+    return (
+      <Slider {...settings}>
+        {imgs.map((v, i) => (
+          <div key={i}>
+            <img src={v.url} />
+          </div>
+        ))}
+      </Slider>
+    );
+  };
 
+  render() {
+    let {
+      moduleData,
+      moduleData: {
+        data: { imgs },
+      },
+    } = this.props;
+    if (imgs === undefined) {
+      imgs = [];
     }
-
-    render() {
-        let {
-            moduleData,
-            moduleData: {
-                data: {
-                    imgs,
-                },
-            },
-        } = this.props;
-        if (imgs === undefined) {
-            imgs = [];
-        }
-        return (
-            <Module moduleData={moduleData}>
-                {this.renderSlider(imgs)}
-            </Module >
-        );
-    }
+    return <Module moduleData={moduleData}>{this.renderSlider(imgs)}</Module>;
+  }
 }

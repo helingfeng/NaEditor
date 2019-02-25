@@ -1,56 +1,56 @@
 .d-layer {
-    position: fixed;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  z-index: 20;
+  .d-mask {
+    position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    width: 100%;
-    z-index: 20;
-    .d-mask {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(0, 0, 0, .5);
-        touch-action: none;
+    background: rgba(0, 0, 0, 0.5);
+    touch-action: none;
+  }
+  .d-img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 70%;
+    z-index: 1;
+    img {
+      max-width: 100%;
     }
-    .d-img {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        max-width: 70%;
-        z-index: 1;
-        img {
-            max-width: 100%;
-        }
-        .d-close {
-            position: absolute;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            top: -15px;
-            right: -15px;
-            width: 26px;
-            height: 26px;
-            border-radius: 50%;
-            background: #f3f5f7;
-            i {
-                font-size: 18px;
-                color: #999;
-            }
-        }
+    .d-close {
+      position: absolute;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      top: -15px;
+      right: -15px;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: #f3f5f7;
+      i {
+        font-size: 18px;
+        color: #999;
+      }
     }
+  }
 }
 
 // 装修
-.d-module[data-module-type-id="5"] {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    .d-hint {
-        font-size: 14px;
-        color: #333;
-    }
+.d-module[data-module-type-id='5'] {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .d-hint {
+    font-size: 14px;
+    color: #333;
+  }
 }

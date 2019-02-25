@@ -7,73 +7,71 @@ import { IModuleData, IState } from '../interface';
 // import { getModule } from '../../selectors';
 
 interface IModuleTagProps {
-    moduleId: number;
-    focusModule: (moduleId: number) => void;
-    top: number;
-    height: number;
-    isActive: boolean;
-    moduleName: string;
+  moduleId: number;
+  focusModule: (moduleId: number) => void;
+  top: number;
+  height: number;
+  isActive: boolean;
+  moduleName: string;
 }
 
-interface IModuleTagState {
-
-}
+interface IModuleTagState {}
 
 class ModuleTag extends Component<IModuleTagProps, IModuleTagState> {
+  constructor(props: IModuleTagProps) {
+    super(props);
+  }
 
-    constructor(props: IModuleTagProps) {
-        super(props);
-    }
+  render() {
+    const {
+      moduleId,
+      moduleName,
+      focusModule,
+      top,
+      height,
+      isActive,
+    } = this.props;
 
-    render() {
-
-        const {
-            moduleId,
-            moduleName,
-            focusModule,
-            top,
-            height,
-            isActive,
-        } = this.props;
-
-        return (
-            <Tooltip title={moduleName} placement="left">
-                <div
-                    className={`d-module-tag ${isActive ? 'active' : ''}`}
-                    style={{ top, maxHeight: isActive ? '' : height }}
-                    onClick={() => { focusModule(moduleId); }}
-                >{moduleName}
-                </div>
-            </Tooltip>
-        );
-    }
-
+    return (
+      <Tooltip title={moduleName} placement="left">
+        <div
+          className={`d-module-tag ${isActive ? 'active' : ''}`}
+          style={{ top, maxHeight: isActive ? '' : height }}
+          onClick={() => {
+            focusModule(moduleId);
+          }}
+        >
+          {moduleName}
+        </div>
+      </Tooltip>
+    );
+  }
 }
 
 // TOOD:这里props为什么加类型会报错
 const mapStateToProps = (state: IState, props: any) => {
+  // 获取当前模块id
+  const { moduleId } = props;
 
-    // 获取当前模块id
-    const { moduleId } = props;
+  // 筛选出本模块
+  const module: IModuleData = state.moduleList.filter(
+    v => v.moduleId === moduleId,
+  )[0];
 
-    // 筛选出本模块
-    const module: IModuleData = state.moduleList.filter(v => v.moduleId === moduleId)[0];
+  const {
+    tempData: { top, height, isActive },
+    moduleName,
+  } = module;
 
-    const {
-        tempData: {
-            top,
-            height,
-            isActive,
-        },
-        moduleName,
-    } = module;
-
-    return {
-        top,
-        height,
-        isActive,
-        moduleName,
-    };
+  return {
+    top,
+    height,
+    isActive,
+    moduleName,
+  };
 };
 
-export default connect(mapStateToProps, { focusModule })(ModuleTag);
+export default connect(
+  mapStateToProps,
+  { focusModule },
+)(ModuleTag);

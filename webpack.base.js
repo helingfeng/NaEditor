@@ -3,7 +3,8 @@ const path = require('path');
 const glob = require('glob');
 const webpack = require('webpack');
 const entryList = glob.sync('src/page/*/index.js');
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
+  .BundleAnalyzerPlugin;
 const isAnalyze = process.env.npm_config_argv.includes('analyze');
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 const HappyPack = require('happypack');
@@ -12,33 +13,24 @@ let cliEntry = process.env.npm_config_argv.match(/--entry=([\w]+)/);
 
 let entrys = {};
 entryList.forEach(function(file) {
-    const name = file.replace(/src\/(page\/.*)\/index.js/ig, '$1');
-    entrys[name] = './' + file;
+  const name = file.replace(/src\/(page\/.*)\/index.js/gi, '$1');
+  entrys[name] = './' + file;
 });
 if (cliEntry) {
-    const pageName = cliEntry[1];
-    const result = {};
-    for (let i in entrys) {
-        if (i.includes(pageName)) {
-            result[i] = entrys[i];
-        }
+  const pageName = cliEntry[1];
+  const result = {};
+  for (let i in entrys) {
+    if (i.includes(pageName)) {
+      result[i] = entrys[i];
     }
-    entrys = result;
+  }
+  entrys = result;
 }
 
 // console.log(entrys);
 const sourcePath = path.join(__dirname, '/src');
 
-let plugins = [
-    new LodashModuleReplacementPlugin(),
-    new HappyPack({
-        id: 'happybabel',
-        loaders: [{
-            loader: 'babel-loader',
-        }],
-        threads: 4,
-    })
-];
+let plugins = [new LodashModuleReplacementPlugin()];
 
 // const HtmlWebpackPlugins = [
 //     new HtmlWebpackPlugin({
@@ -71,100 +63,109 @@ let plugins = [
 // plugins = plugins.concat(HtmlWebpackPlugins);
 
 if (isAnalyze) {
-    plugins.push(new BundleAnalyzerPlugin());
+  plugins.push(new BundleAnalyzerPlugin());
 }
 
-let imageLoaderConfig = 'file-loader?hash=sha512&digest=hex&name=images/[name].[ext]';
+let imageLoaderConfig =
+  'file-loader?hash=sha512&digest=hex&name=images/[name].[ext]';
 
 module.exports = {
-    entry: entrys,
-    // entry: {
-    //     'page/decorate': './src/page/decorate/index.js',
-    // },
-    output: {
-        path: path.resolve(__dirname + '/dist'),
-        filename: '[name].[chunkhash:8].js',
-        // filename: '[name].js',
-        // chunkFilename: '[id].chunk.js',
-        publicPath: `${require('./config').staticAddress}/`,
+  entry: entrys,
+  // entry: {
+  //     'page/decorate': './src/page/decorate/index.js',
+  // },
+  output: {
+    path: path.resolve(__dirname + '/dist'),
+    // filename: '[name].[chunkhash:8].js',
+    filename: '[name].js',
+    // chunkFilename: '[id].chunk.js',
+    publicPath: `${require('./config').staticAddress}/`,
+  },
+  stats: 'minimal',
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        // 排除的chunk(通常是import()引入的)
+        // 'intersection-observer': {
+        //     name: 'intersection-observer',
+        //     test: /[\\/]node_modules[\\/]intersection-observer/,
+        //     priority: 20,
+        // },
+        // 首先: 打包node_modules中的文件
+        vendor: {
+          name: 'vendor',
+          // 后视正则把需要异步载入的chunk断下来
+          test: /[\\/]node_modules[\\/](?!intersection-observer|n-zepto)/,
+          chunks(chunk) {
+            // 浏览页面单独打包
+            return !['page/view', 'page/login', 'page/register'].includes(
+              chunk.name,
+            );
+          },
+          priority: 10,
+        },
+        viewVendor: {
+          name: 'viewVendor',
+          test: /[\\/]node_modules[\\/](?!n-zepto)/,
+          chunks(chunk) {
+            // 浏览页面单独打包
+            return chunk.name === 'page/view';
+          },
+          priority: 10,
+        },
+      },
     },
-    stats: 'minimal',
-    optimization: {
-        splitChunks: {
-            cacheGroups: {
-                // 排除的chunk(通常是import()引入的)
-                // 'intersection-observer': {
-                //     name: 'intersection-observer',
-                //     test: /[\\/]node_modules[\\/]intersection-observer/,
-                //     priority: 20,
-                // },
-                // 首先: 打包node_modules中的文件
-                vendor: {
-                    name: "vendor",
-                    // 后视正则把需要异步载入的chunk断下来
-                    test: /[\\/]node_modules[\\/](?!intersection-observer|n-zepto)/,
-                    chunks(chunk) {
-                        // 浏览页面单独打包
-                        return !['page/view', 'page/login', 'page/register'].includes(chunk.name);
-                    },
-                    priority: 10,
-                },
-                viewVendor: {
-                    name: "viewVendor",
-                    test: /[\\/]node_modules[\\/](?!n-zepto)/,
-                    chunks(chunk) {
-                        // 浏览页面单独打包
-                        return chunk.name === 'page/view';
-                    },
-                    priority: 10,
-                }
-            }
-        }
-    },
-    module: {
-        rules: [{
-                test: /\.tsx?$/,
-                include: [
-                    path.resolve(__dirname, 'src'),
-                ],
-                loader: ["awesome-typescript-loader", ]
-            },
-            {
-                test: /\.jsx?/,
-                include: [
-                    path.resolve(__dirname, 'src'),
-                    path.resolve(__dirname, 'config.js'),
-                ],
-                use: 'happypack/loader?id=happybabel'
-            },
-
-            // {
-            //     test: /\.html/,
-            //     exclude: /node_modules/,
-            //     use: 'html-loader'
-            // }
-            {
-                test: /\.(jpe?g|png|gif|svg)$/i,
-                use: [
-                    'file-loader',
-                    {
-                        loader: 'image-webpack-loader',
-                        options: {
-                            disable: true, // webpack@2.x and newer
-                        },
-                    },
-                ],
-            }, {
-                test: /\.(woff|woff2|ttf|eot)$/,
-                use: 'file-loader'
-            },
+  },
+  module: {
+    rules: [
+      {
+        test: /\.tsx?$/,
+        use: [
+          {
+            loader: 'babel-loader',
+          },
+          {
+            loader: 'ts-loader',
+          },
         ],
-    },
-    // externals: {
-    //     jquery: 'jQuery',
-    // },
-    resolve: {
-        extensions: ['.js', '.json', '.jsx', '.ts', '.tsx', '.d.ts'],
-    },
-    plugins,
+      },
+      {
+        test: /\.jsx?$/,
+        include: [
+          path.resolve(__dirname, 'src'),
+          path.resolve(__dirname, 'config.js'),
+        ],
+        loader: 'babel-loader',
+      },
+
+      // {
+      //     test: /\.html/,
+      //     exclude: /node_modules/,
+      //     use: 'html-loader'
+      // }
+      {
+        test: /\.(jpe?g|png|gif|svg)$/i,
+        use: [
+          'file-loader',
+          {
+            loader: 'image-webpack-loader',
+            options: {
+              disable: true, // webpack@2.x and newer
+            },
+          },
+        ],
+      },
+      {
+        test: /\.(woff|woff2|ttf|eot)$/,
+        use: 'file-loader',
+      },
+    ],
+  },
+  // externals: {
+  //     jquery: 'jQuery',
+  // },
+  resolve: {
+    extensions: ['.js', '.json', '.jsx', '.ts', '.tsx', '.d.ts'],
+  },
+  plugins,
 };

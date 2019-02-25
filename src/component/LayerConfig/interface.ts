@@ -1,3 +1,3 @@
 export interface LayerConfData {
-    imgUrl: string;
+  imgUrl: string;
 }

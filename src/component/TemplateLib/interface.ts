@@ -1,4 +1,4 @@
 export enum EditType {
-    Add,
-    Edit,
+  Add,
+  Edit,
 }

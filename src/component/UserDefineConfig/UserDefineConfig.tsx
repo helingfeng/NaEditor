@@ -6,72 +6,75 @@ import { escape, unescape } from 'html-escaper';
 const { TextArea } = Input;
 
 interface UserDefineConfigProps {
-    moduleData: any;
-    moduleConfig: any;
+  moduleData: any;
+  moduleConfig: any;
 }
 
 class UserDefineConfig extends React.Component<UserDefineConfigProps, any> {
-
-    constructor(props: UserDefineConfigProps) {
-        super(props);
-        let code;
-        if (props.moduleData.configData) {
-            code = props.moduleData.configData.code;
-        } else {
-            code = '';
-        }
-        this.state = {
-            code,
-        };
+  constructor(props: UserDefineConfigProps) {
+    super(props);
+    let code;
+    if (props.moduleData.configData) {
+      code = props.moduleData.configData.code;
+    } else {
+      code = '';
     }
+    this.state = {
+      code,
+    };
+  }
 
-    componentWillReceiveProps(nextProps: UserDefineConfigProps) {
-        let newCode;
-        if (nextProps.moduleData.configData) {
-            newCode = nextProps.moduleData.configData.code;
-        } else {
-            newCode = '';
-        }
-        this.setState({
-            code: newCode,
-        });
-
+  componentWillReceiveProps(nextProps: UserDefineConfigProps) {
+    let newCode;
+    if (nextProps.moduleData.configData) {
+      newCode = nextProps.moduleData.configData.code;
+    } else {
+      newCode = '';
     }
+    this.setState({
+      code: newCode,
+    });
+  }
 
-    getConfigData = () => {
-        const result = {
-            code: this.state.code,
-        };
-        return result;
-    }
+  getConfigData = () => {
+    const result = {
+      code: this.state.code,
+    };
+    return result;
+  };
 
-    toModuleData(configData: any) {
-        const { moduleConfig } = this.props;
-        const result = Object.assign({}, moduleConfig.moduleData, {
-            data: configData,
-        });
-        return result;
-    }
+  toModuleData(configData: any) {
+    const { moduleConfig } = this.props;
+    const result = Object.assign({}, moduleConfig.moduleData, {
+      data: configData,
+    });
+    return result;
+  }
 
-    render() {
-        return (
-            <div>
-                <TextArea
-                    placeholder="在此输入代码"
-                    value={unescape(this.state.code || '')}
-                    onChange={(e) => {
-                        const escaped = escape(e.target.value);
-                        this.setState({ code: escaped });
-                    }}
-                />
-            </div>
-        );
-    }
+  render() {
+    return (
+      <div>
+        <TextArea
+          placeholder="在此输入代码"
+          value={unescape(this.state.code || '')}
+          onChange={e => {
+            const escaped = escape(e.target.value);
+            this.setState({ code: escaped });
+          }}
+        />
+      </div>
+    );
+  }
 }
 
 const mapStateToProps = (state: any) => ({
-    moduleConfig: state.moduleConfig,
-    moduleList: state.moduleList,
+  moduleConfig: state.moduleConfig,
+  moduleList: state.moduleList,
 });
 
-export default connect(mapStateToProps, {}, undefined, { withRef: true })(UserDefineConfig);
+export default connect(
+  mapStateToProps,
+  {},
+  undefined,
+  { withRef: true },
+)(UserDefineConfig);

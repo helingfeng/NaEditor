@@ -10,12 +10,12 @@ import { IBASE_DATA } from '../../component/interface';
 import '../../common/script/interceptor';
 
 Action.getInitData(1).then((BASE_DATA: IBASE_DATA) => {
-	ReactDOM.render(
-		<Provider store={store} >
-			<ContextProvider BASE_DATA={BASE_DATA}>
-				<Canvas />
-			</ContextProvider>
-		</Provider>,
-		document.querySelector('#Container'),
-	);
+  ReactDOM.render(
+    <Provider store={store}>
+      <ContextProvider BASE_DATA={BASE_DATA}>
+        <Canvas />
+      </ContextProvider>
+    </Provider>,
+    document.querySelector('#Container'),
+  );
 });

@@ -1,19 +1,23 @@
 {
-    "presets": [
-        ["react"],
-        ["env", {
-            "targets": {
-                "chrome": "49",
-                "ie": "11"
-            }
-        }]
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "useBuiltIns": "entry"
+      }
     ],
-    "plugins": [
-        ["react-hot-loader/babel"],
-        ["import", {
-            "libraryName": "antd"
-        }],
-        ["transform-runtime"],
-        ["transform-decorators-legacy"]
+    ["@babel/preset-react"]
+  ],
+  "plugins": [
+    ["@babel/plugin-transform-runtime"],
+    ["@babel/plugin-syntax-dynamic-import"],
+    // ["react-hot-loader/babel"],
+    [
+      "import",
+      {
+        "libraryName": "antd"
+      }
     ]
+    // ["@babel/plugin-transform-decorators-legacy"]
+  ]
 }
