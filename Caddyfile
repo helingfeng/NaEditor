@@ -1,4 +1,8 @@
 
+http://h5editor.net {
+    proxy / localhost:8081
+}
+
 http://localhost:3000/api {
     log stdout
     proxy / http://47.107.69.189 {

@@ -223,4 +223,6 @@ class ManagePage extends React.Component<any, any> {
   }
 }
 
+export default ManagePage;
+
 ReactDOM.render(<ManagePage />, document.querySelector('#app'));
