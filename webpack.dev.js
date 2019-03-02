@@ -6,6 +6,9 @@ const path = require('path');
 
 
 const plugins = [
+    new webpack.DefinePlugin({
+        IS_DEV: JSON.stringify(true)
+    }),
     new webpack.HotModuleReplacementPlugin(),
     new HtmlWebpackPlugin({
         filename: 'index.html',
@@ -29,8 +32,8 @@ config.output.filename = '[name].js';
 
 config.output = {
     path: path.resolve(__dirname + '/dist'),
-    filename: '[name].js',
-    // publicPath: `${require('./config').staticAddress.replace('.cn','.net')}/`,
+    filename: 'js/[name].js',
+    publicPath: '/',
 }
 
 module.exports = merge(config, {

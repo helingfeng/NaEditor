@@ -136,14 +136,14 @@ const DBAction = {
     if (!pageId && !isServer()) {
       pageId = (window as any).location.href.match(/pageId=([0-9]+)/)[1];
     }
-    const result = (await axios(INTERFACE.getInitData, {
+    const { success, data } = (await axios(INTERFACE.getInitData, {
       params: {
         pageId,
       },
     })).data;
-    if (result.success) {
-      result.data.pageType = pageType;
-      return result.data;
+    if (success === true) {
+      console.log(data);
+      return data;
     }
   },
   /**

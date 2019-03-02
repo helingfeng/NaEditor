@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import debounce from 'lodash/debounce';
 import PropTypes from 'prop-types';
 import { hot } from 'react-hot-loader';
+import { withRouter } from 'react-router-dom';
 
 import '../../common/script/interceptor';
 import store from '../../store';
@@ -17,10 +18,6 @@ import ModuleNav from '../../component/ModuleNav';
 import Topbar from '../../component/TopBar';
 
 class Decorate extends React.Component<any, any> {
-  static contextTypes = {
-    BASE_DATA: PropTypes.object,
-  };
-
   constructor(props: any) {
     super(props);
   }
@@ -38,6 +35,7 @@ class Decorate extends React.Component<any, any> {
   }
 
   iframeLoaded = () => {
+    console.log(this.props);
     const { BASE_DATA } = this.context;
 
     class Iframe extends React.Component {
@@ -71,6 +69,7 @@ class Decorate extends React.Component<any, any> {
   };
 
   render() {
+    console.log(this.props);
     const { username } = this.context.BASE_DATA;
     return (
       <div className="cd-main-area J_mainArea">
@@ -111,4 +110,4 @@ class Decorate extends React.Component<any, any> {
   }
 }
 
-export default (PRODUCTION ? Decorate : hot(module)(Decorate));
+export default withRouter(PRODUCTION ? Decorate : hot(module)(Decorate));

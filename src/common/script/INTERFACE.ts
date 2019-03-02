@@ -37,5 +37,5 @@ const INTERFACE = {
 
   viewAddress: `${SLD.view}/page`,
 };
-
+console.log(INTERFACE);
 export default INTERFACE;

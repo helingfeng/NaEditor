@@ -77,7 +77,7 @@ module.exports = {
     // },
     output: {
         path: path.resolve(__dirname + '/dist'),
-        filename: '[name].[chunkhash:8].js',
+        filename: 'js/[name].[chunkhash:8].js',
         // filename: '[name].js',
         // chunkFilename: '[id].chunk.js',
         publicPath: `${require('./config').staticAddress}/`,

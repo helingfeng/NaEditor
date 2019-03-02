@@ -21,6 +21,7 @@ let initialState: any = {
     isVisible: false,
     moduleData: undefined,
   },
+  userInfo: {},
 };
 if (!isServer()) {
   initialState = (window as any).__INITIAL_STATE__ || initialState;
