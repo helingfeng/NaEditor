@@ -16,7 +16,9 @@ import Canvas from '../../component/Canvas';
 import ContextProvider from '../../component/ContextProvider';
 import ModuleNav from '../../component/ModuleNav';
 import Topbar from '../../component/TopBar';
+import Connect from '../../component/Connect';
 
+@(Connect('userInfo,pageInfo') as any)
 class Decorate extends React.Component<any, any> {
   constructor(props: any) {
     super(props);
@@ -35,14 +37,12 @@ class Decorate extends React.Component<any, any> {
   }
 
   iframeLoaded = () => {
-    console.log(this.props);
-    const { BASE_DATA } = this.context;
-
+    const { pageInfo } = this.props;
     class Iframe extends React.Component {
       render() {
         return (
           <Provider store={store}>
-            <ContextProvider BASE_DATA={BASE_DATA}>
+            <ContextProvider BASE_DATA={pageInfo}>
               <Canvas />
             </ContextProvider>
           </Provider>
@@ -69,8 +69,7 @@ class Decorate extends React.Component<any, any> {
   };
 
   render() {
-    console.log(this.props);
-    const { username } = this.context.BASE_DATA;
+    const { username } = this.props.userInfo;
     return (
       <div className="cd-main-area J_mainArea">
         <div className="J_topBar">

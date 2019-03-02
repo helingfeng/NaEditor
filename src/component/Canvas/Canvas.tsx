@@ -12,6 +12,7 @@ import Carousel from '../Carousel';
 import Layer from '../Layer';
 import Fixed from '../Fixed';
 import Goods from '../Goods';
+import Connect from '../Connect';
 
 interface ICanvasProps {
   fetchModuleList: (pageId: number) => void;
@@ -24,6 +25,7 @@ interface ICanvasState {
   isLoading: boolean;
 }
 
+@(Connect('pageInfo') as any)
 class Canvas extends React.Component<ICanvasProps, ICanvasState> {
   static contextTypes = {
     BASE_DATA: PropTypes.object,

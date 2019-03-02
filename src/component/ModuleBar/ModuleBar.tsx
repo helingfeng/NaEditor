@@ -11,6 +11,7 @@ import {
   copyModuleRequest,
 } from '../../actions';
 import { IState, IModuleConfig, IModuleData } from '../interface';
+import Connect from '../Connect';
 
 interface ModuleBarProps {
   moduleList: IModuleData[];
@@ -24,6 +25,7 @@ interface ModuleBarProps {
 
 interface ModuleBarState {}
 
+@(Connect('pageInfo') as any)
 class ModuleBar extends Component<ModuleBarProps, ModuleBarState> {
   static contextTypes = {
     BASE_DATA: PropTypes.object,
@@ -37,7 +39,7 @@ class ModuleBar extends Component<ModuleBarProps, ModuleBarState> {
    * 上移模块
    */
   up = (moduleId: number) => {
-    const { pageId } = this.context.BASE_DATA;
+    const { pageId } = (this.props as any).pageInfo;
     const preModuleId = this.props.moduleList.reduce((acc, v, i, array) => {
       if (v.moduleId === moduleId) {
         // 如果这不是第一个模块
@@ -65,7 +67,7 @@ class ModuleBar extends Component<ModuleBarProps, ModuleBarState> {
    * 下移模块
    */
   down = (moduleId: number) => {
-    const { pageId } = this.context.BASE_DATA;
+    const { pageId } = (this.props as any).pageInfo;
     const preModuleId = this.props.moduleList.reduce((acc, v, i, array) => {
       if (v.moduleId === moduleId) {
         let nextModule = array[i + 1];
@@ -99,7 +101,8 @@ class ModuleBar extends Component<ModuleBarProps, ModuleBarState> {
   };
 
   render() {
-    const { pageId } = this.context.BASE_DATA;
+    console.log(this.props);
+    const { pageId } = (this.props as any).pageInfo;
     const {
       showConfig,
       moduleConfig,

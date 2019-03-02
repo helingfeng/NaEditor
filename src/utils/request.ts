@@ -1,9 +1,9 @@
-import axios from 'axios';
+import axios, { AxiosPromise, AxiosResponse } from 'axios';
 
-interface UserAxios {
+export type AxiosReturn = {
   success: boolean;
   data: any;
-}
+};
 
 const request = axios.create({
   baseURL: '/',
@@ -19,5 +19,5 @@ export default request;
 export const get = (url: string, params: Object, ...options: any): any =>
   request({ url, params, method: 'get', ...options });
 
-export const post = (url: string, data: Object, ...options: any) =>
+export const post = (url: string, data: Object, ...options: any): any =>
   request({ url, data, method: 'post', ...options });

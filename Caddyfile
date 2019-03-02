@@ -1,7 +1,7 @@
 
 http://h5editor.net {
     proxy /api http://47.107.69.189 {
-        header_upstream Cookie "jenkins-timestamper-offset=-28800000; ACEGI_SECURITY_HASHED_REMEMBER_ME_COOKIE=YWRtaW46MTU1MjMyMDE2MzcxMjo0YmM2MjU4MmJlOWM1YjQ1N2JmMDgyMzdkMWE2ZmE3ZWUwZDFiYTU3MmJlMGQ5NmJjYjcwODQ1ZGNmMGE1ZGFk; pin=test; pin.sig=99WG_V7AJx-PFHEksAUV6i-Q9O8; h5editor_sess=eyJ1c2VyIjoidGVzdCIsIl9leHBpcmUiOjE1NTE1NDUwODU4NzcsIl9tYXhBZ2UiOjcyMDAwMDB9; h5editor_sess.sig=k600RbO-uhhYIic6odsy_36laiQ"
+        header_upstream Cookie "jenkins-timestamper-offset=-28800000; ACEGI_SECURITY_HASHED_REMEMBER_ME_COOKIE=YWRtaW46MTU1MjMyMDE2MzcxMjo0YmM2MjU4MmJlOWM1YjQ1N2JmMDgyMzdkMWE2ZmE3ZWUwZDFiYTU3MmJlMGQ5NmJjYjcwODQ1ZGNmMGE1ZGFk; pin=test; pin.sig=99WG_V7AJx-PFHEksAUV6i-Q9O8; h5editor_sess=eyJ1c2VyIjoidGVzdCIsIl9leHBpcmUiOjE1NTE1NTI0NjY4NDMsIl9tYXhBZ2UiOjcyMDAwMDB9; h5editor_sess.sig=yVpPiNz3w4dEfTPy31-kvDYVnG8"
         header_upstream Host "h5editor.cn"
         header_upstream Referer "http://h5editor.cn/page/manage"
     }

@@ -5,6 +5,7 @@ import ReactDOM from 'react-dom';
 import QRCode from 'qrcode.react';
 import Action from '../../common/script/action';
 import { serverAddress } from '../../../config';
+import Connect from '../Connect';
 
 interface TopbarProps {
   hasPreview?: boolean;
@@ -17,6 +18,7 @@ interface TopbarState {
   isPreviewActive: boolean;
 }
 
+@(Connect('pageInfo') as any)
 class Topbar extends PureComponent<TopbarProps, TopbarState> {
   static contextTypes = {
     BASE_DATA: PropTypes.object,
@@ -48,10 +50,7 @@ class Topbar extends PureComponent<TopbarProps, TopbarState> {
   };
 
   renderPreview = () => {
-    const {
-      pageId,
-      pageInfo: { pageName },
-    } = this.context.BASE_DATA;
+    const { pageId, pageName } = (this.props as any).pageInfo;
     return (
       <div
         className={`d-preview-wrap ${
@@ -79,7 +78,7 @@ class Topbar extends PureComponent<TopbarProps, TopbarState> {
   };
 
   preview = () => {
-    const { pageId } = this.context.BASE_DATA;
+    const { pageId } = (this.props as any).pageInfo;
     this.setState({
       isPreviewActive: true,
     });
@@ -94,7 +93,7 @@ class Topbar extends PureComponent<TopbarProps, TopbarState> {
   };
 
   publish = async () => {
-    const { pageId } = this.context.BASE_DATA;
+    const { pageId } = (this.props as any).pageInfo;
     const result = await Action.publishPage(pageId);
     if (result.success) {
       message.success('发布页面成功');

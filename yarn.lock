@@ -643,7 +643,7 @@
   version "2.2.1"
   resolved "https://registry.npmjs.org/@types/js-cookie/-/js-cookie-2.2.1.tgz#aa6f6d5e5aaf7d97959e9fa938ac2501cf1a76f4"
 
-"@types/lodash@^4.14.116":
+"@types/lodash@^4.14.121":
   version "4.14.121"
   resolved "https://registry.npmjs.org/@types/lodash/-/lodash-4.14.121.tgz#9327e20d49b95fc2bf983fc2f045b2c6effc80b9"
 
@@ -678,9 +678,9 @@
     "@types/react" "*"
     "@types/webpack" "*"
 
-"@types/react-redux@^6.0.5":
-  version "6.0.13"
-  resolved "https://registry.npmjs.org/@types/react-redux/-/react-redux-6.0.13.tgz#490ace7b49e57281edf85671bb455b31cdfa7d0b"
+"@types/react-redux@^7.0.1":
+  version "7.0.1"
+  resolved "https://registry.npmjs.org/@types/react-redux/-/react-redux-7.0.1.tgz#9dd2503be7a9861c5a092bf1c5050b7ade4dc62e"
   dependencies:
     "@types/react" "*"
     redux "^4.0.0"
